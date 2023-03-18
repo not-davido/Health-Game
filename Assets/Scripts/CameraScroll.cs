@@ -10,7 +10,9 @@ public class CameraScroll : MonoBehaviour
 
     private void Awake()
     {
-        StartGame.OnGameStarted += StartScroll;
+        StartGame.OnGameStarted += Scroll;
+
+        EventManager.AddListener<PlayerFailedEvent>(OnPlayerFailed);
     }
 
     // Update is called once per frame
@@ -21,12 +23,16 @@ public class CameraScroll : MonoBehaviour
         }
     }
 
-    void StartScroll() {
-        scrolling = true;
+    void Scroll(bool scroll) {
+        scrolling = scroll;
     }
+
+    void OnPlayerFailed(PlayerFailedEvent evt) => Scroll(false);
 
     private void OnDisable()
     {
-        StartGame.OnGameStarted -= StartScroll;
+        StartGame.OnGameStarted -= Scroll;
+
+        EventManager.RemoveListener<PlayerFailedEvent>(OnPlayerFailed);
     }
 }

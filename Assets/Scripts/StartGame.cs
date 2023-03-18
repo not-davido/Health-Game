@@ -7,14 +7,14 @@ public class StartGame : MonoBehaviour
 {
     private bool gameStarted;
 
-    public static event Action OnGameStarted;
+    public static event Action<bool> OnGameStarted;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (gameStarted) return;
 
         if (collision.TryGetComponent(out PlayerController2D _)) {
-            OnGameStarted?.Invoke();
+            OnGameStarted?.Invoke(true);
             gameStarted = true;
         }
     }

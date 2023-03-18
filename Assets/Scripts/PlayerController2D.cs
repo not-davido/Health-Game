@@ -27,10 +27,14 @@ public class PlayerController2D : MonoBehaviour
     [SerializeField] private float boxCastSizeAdjustmentY = 0;
     [SerializeField] private bool debugGroundCheck;
 
+    [Header("Prefabs")]
+    [SerializeField] private GameObject formWhenDead;
+
     private PlayerInputHandler inputHandler;
     private Rigidbody2D rb2D;
     private BoxCollider2D boxCollider2D;
     private Animator anim;
+    private Health health;
     private float horizontalMovement;
     private float currentSpeed;
     private float jumpCooldownTimer;
@@ -49,6 +53,9 @@ public class PlayerController2D : MonoBehaviour
         boxCollider2D = GetComponent<BoxCollider2D>();
         rb2D = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        health = GetComponent<Health>();
+
+        health.OnDie += OnDie;
 
         rb2D.freezeRotation = true;
     }
@@ -143,10 +150,21 @@ public class PlayerController2D : MonoBehaviour
                 boxCollider2D.bounds.size - new Vector3(boxCastSizeAdjustmentX, boxCastSizeAdjustmentY));
     }
 
-    private void OnBecameInvisible()
-    {
-        if (transform.position.y < cameraTransform.position.y) {
-            EventManager.Broadcast(Events.PlayerFailedEvent);
-        }
+    //private void OnBecameInvisible()
+    //{
+    //    if (transform.position.y < cameraTransform.position.y) {
+    //        EventManager.Broadcast(Events.PlayerFailedEvent);
+    //    }
+    //}
+
+    void OnDie() {
+        isDead = true;
+        // Explode or sumn idk
+        gameObject.SetActive(false);
+
+        var g = Instantiate(formWhenDead, transform.position, transform.rotation);
+        g.AddComponent<Rigidbody2D>().AddExplosionForce(500, 1.5f);
+
+        EventManager.Broadcast(Events.PlayerFailedEvent);
     }
 }

@@ -5,7 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class GameFlowManager : MonoBehaviour
 {
+    [SerializeField] private float delay = 5;
+
     private bool gameIsEnding;
+    private float delayTimer;
+
+    public bool GameIsEnding => gameIsEnding;
 
     private void Awake()
     {
@@ -21,12 +26,17 @@ public class GameFlowManager : MonoBehaviour
     void Update()
     {
         if (gameIsEnding) {
-            SceneManager.LoadScene(0);
+            if (Time.time > delayTimer)
+                SceneManager.LoadScene(0);
         }
     }
 
     void EndGame(bool win) {
         gameIsEnding = true;
+
+        if (!win) {
+            delayTimer = Time.time + delay;
+        }
     }
 
     private void OnDisable()
