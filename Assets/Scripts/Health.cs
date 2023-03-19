@@ -42,7 +42,7 @@ public class Health : MonoBehaviour
                 case GameDifficulty.Mode.Normal:
                     maxHealth = maxHealthNormalMode;
                     break;
-                case GameDifficulty.Mode.Hard:
+                case GameDifficulty.Mode.Impossible:
                     maxHealth = maxHealthHardMode;
                     break;
             }

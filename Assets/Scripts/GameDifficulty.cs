@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameDifficulty : MonoBehaviour
 {
     public enum Mode {
-        Easy, Normal, Hard
+        Easy, Normal, Impossible
     }
 
     public Mode mode;
@@ -17,7 +17,7 @@ public class GameDifficulty : MonoBehaviour
                     return "green";
                 case Mode.Normal:
                     return "yellow";
-                case Mode.Hard:
+                case Mode.Impossible:
                     return "red";
                 default:
                     return "white";

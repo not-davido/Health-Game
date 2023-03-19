@@ -26,7 +26,7 @@ public class MainMenu : MonoBehaviour
     }
 
     public void HardMode() {
-        FindObjectOfType<GameDifficulty>().mode = GameDifficulty.Mode.Hard;
+        FindObjectOfType<GameDifficulty>().mode = GameDifficulty.Mode.Impossible;
         StartGame();
     }
 

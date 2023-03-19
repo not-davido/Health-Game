@@ -24,7 +24,7 @@ public class PlayerLightSource : MonoBehaviour
                 case GameDifficulty.Mode.Normal:
                     playerLight.pointLightOuterRadius = outerLightRadiusNormalMode;
                     break;
-                case GameDifficulty.Mode.Hard:
+                case GameDifficulty.Mode.Impossible:
                     playerLight.pointLightOuterRadius = outerLightRadiusHardMode;
                     break;
             }

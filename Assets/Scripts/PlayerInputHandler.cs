@@ -94,5 +94,9 @@ public class PlayerInputHandler : MonoBehaviour
         else
             crouch = false;
     }
+
+    public void StopMove() {
+        move = Vector2.zero;
+    }
 }
 

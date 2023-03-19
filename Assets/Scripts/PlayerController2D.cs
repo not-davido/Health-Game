@@ -146,14 +146,14 @@ public class PlayerController2D : MonoBehaviour
         anim.SetTrigger("hit");
     }
 
-    private void OnDrawGizmos() {
-        if (!UnityEditor.EditorApplication.isPlaying) return;
+    //private void OnDrawGizmos() {
+    //    if (!UnityEditor.EditorApplication.isPlaying) return;
 
-        Gizmos.color = IsGrounded() ? Color.green : Color.red;
+    //    Gizmos.color = IsGrounded() ? Color.green : Color.red;
 
-        Gizmos.DrawWireCube(boxCollider2D.bounds.center - new Vector3(0f, groundedDistance),
-                boxCollider2D.bounds.size - new Vector3(boxCastSizeAdjustmentX, boxCastSizeAdjustmentY));
-    }
+    //    Gizmos.DrawWireCube(boxCollider2D.bounds.center - new Vector3(0f, groundedDistance),
+    //            boxCollider2D.bounds.size - new Vector3(boxCastSizeAdjustmentX, boxCastSizeAdjustmentY));
+    //}
 
     //private void OnBecameInvisible()
     //{
@@ -163,16 +163,19 @@ public class PlayerController2D : MonoBehaviour
     //}
 
     void CheckIfBelowCamera() {
-        Vector3 position = cam.ViewportToWorldPoint(new Vector3(0.5f, 0));
-        if (transform.position.y + 0.5f < position.y) {
-            health.Kill();
+        if (!isDead) {
+            Vector3 position = cam.ViewportToWorldPoint(new Vector3(0.5f, 0));
+            if (transform.position.y + 0.5f < position.y) {
+                health.Kill();
+            }
         }
     }
 
     void OnDie() {
         isDead = true;
-        // Explode or sumn idk
-        gameObject.SetActive(false);
+
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        gameObject.GetComponentInChildren<UnityEngine.Rendering.Universal.Light2D>().enabled = false;
 
         var g = Instantiate(formWhenDead, transform.position, transform.rotation);
         g.AddComponent<Rigidbody2D>().AddExplosionForce(500, 1.5f, diedFromFall ? ExplosionDirection.Up : ExplosionDirection.Center);

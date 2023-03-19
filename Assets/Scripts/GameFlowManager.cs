@@ -8,6 +8,7 @@ public class GameFlowManager : MonoBehaviour
 {
     [SerializeField] private CanvasGroup fadeCanvas;
     [SerializeField] private TMPro.TextMeshProUGUI gameResultText;
+    [SerializeField] private AudioClip gameResultAudio;
     [SerializeField] private float fadeDelay = 1.5f;
     [SerializeField] private float delayBeforeFading = 3;
     [SerializeField] private float extraDelayForWin = 2f;
@@ -20,6 +21,7 @@ public class GameFlowManager : MonoBehaviour
     private bool gameIsEnding;
     private bool gameIsQuiting;
     private bool won;
+    private bool gameResultAudioPlayed;
     private float fadeTimer;
 
     public bool GameIsEnding => gameIsEnding;
@@ -62,6 +64,11 @@ public class GameFlowManager : MonoBehaviour
                 if (timeRatio >= 1 + 0.5f) {
                     gameResultText.gameObject.SetActive(true);
                     gameResultText.text = $"Difficulty : <color={GameDifficulty.textColor}>{GameDifficulty.mode}</color>\n Attempts : {Attempts.attempt}";
+
+                    if (!gameResultAudioPlayed) {
+                        GetComponentInChildren<AudioSource>().PlayOneShot(gameResultAudio);
+                        gameResultAudioPlayed = true;
+                    }
 
                     if (Keyboard.current.spaceKey.wasPressedThisFrame || Mouse.current.leftButton.wasPressedThisFrame) {
                         SceneManager.LoadScene(0);

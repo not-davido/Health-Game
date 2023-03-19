@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 7406960686977179803}
   - component: {fileID: 7406960686977179802}
   - component: {fileID: 7406960686977179804}
-  - component: {fileID: 7406960686977179805}
   - component: {fileID: 7406960686977179778}
   - component: {fileID: 7406960686977179779}
   m_Layer: 6
@@ -260,24 +259,6 @@ MonoBehaviour:
   m_DefaultActionMap: Gameplay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &7406960686977179805
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7406960686977179797}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83ebb51419b3c44e6a000a46836e3fc0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  obstacleLayers:
-    serializedVersion: 2
-    m_Bits: 55
-  boxCastSizeAdjustmentX: 0
-  boxCastSizeAdjustmentY: -0.01
-  isHittingObstacle: 0
 --- !u!114 &7406960686977179778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,7 +271,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8559a1f3367b84de18c48ded82af4490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 3
+  maxHealthEasyMode: 10
+  maxHealthNormalMode: 5
+  maxHealthHardMode: 3
   criticalHealthRatio: 0.3
 --- !u!114 &7406960686977179779
 MonoBehaviour:
