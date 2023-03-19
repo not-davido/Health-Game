@@ -18,8 +18,6 @@ public class Cannon : MonoBehaviour
     private Vector2 velocity;
     private bool canFire;
 
-    public bool debug;
-
     private ObjectPool<GameObject> projectilePool;
 
     private void Awake()

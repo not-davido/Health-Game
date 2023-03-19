@@ -30,6 +30,7 @@ public class PlayerController2D : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private GameObject formWhenDead;
 
+    private Camera cam;
     private PlayerInputHandler inputHandler;
     private Rigidbody2D rb2D;
     private BoxCollider2D boxCollider2D;
@@ -42,6 +43,7 @@ public class PlayerController2D : MonoBehaviour
     private float inputVelocity;
     private float speedChangeRateVelocity;
     private bool tookDamage;
+    private bool diedFromFall;
 
     public bool isRunning { get; private set; }
     public bool isInvincible { get; private set; }
@@ -57,6 +59,8 @@ public class PlayerController2D : MonoBehaviour
 
         health.OnDie += OnDie;
 
+        cam = Camera.main;
+
         rb2D.freezeRotation = true;
     }
 
@@ -66,6 +70,7 @@ public class PlayerController2D : MonoBehaviour
         Jump();
         FlipSprite();
         UpdateAnimations();
+        CheckIfBelowCamera();
     }
 
     private void FixedUpdate() {
@@ -157,13 +162,20 @@ public class PlayerController2D : MonoBehaviour
     //    }
     //}
 
+    void CheckIfBelowCamera() {
+        Vector3 position = cam.ViewportToWorldPoint(new Vector3(0.5f, 0));
+        if (transform.position.y + 0.5f < position.y) {
+            health.Kill();
+        }
+    }
+
     void OnDie() {
         isDead = true;
         // Explode or sumn idk
         gameObject.SetActive(false);
 
         var g = Instantiate(formWhenDead, transform.position, transform.rotation);
-        g.AddComponent<Rigidbody2D>().AddExplosionForce(500, 1.5f);
+        g.AddComponent<Rigidbody2D>().AddExplosionForce(500, 1.5f, diedFromFall ? ExplosionDirection.Up : ExplosionDirection.Center);
 
         EventManager.Broadcast(Events.PlayerFailedEvent);
     }

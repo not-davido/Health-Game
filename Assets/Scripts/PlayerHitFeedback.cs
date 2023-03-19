@@ -67,6 +67,7 @@ public class PlayerHitFeedback : MonoBehaviour
     void OnTakeDamage(float dmg) {
         ResetFlash();
         SpriteRenderer.material.SetColor("_Color", DamageFlashColor * 10f);
+        FindObjectOfType<MilkShake.Demo.ShakeButton>().UIShakeOnce();
     }
 
     void OnHealed(float amount) {

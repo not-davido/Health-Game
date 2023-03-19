@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class ExtensionScript
 {
-    public static Collider2D[] AddExplosionForce(this Rigidbody2D rb2d, float force, float radius) {
+    public static Collider2D[] AddExplosionForce(this Rigidbody2D rb2d, float force, float radius, ExplosionDirection direction = ExplosionDirection.Center) {
         Collider2D[] collisions = Physics2D.OverlapCircleAll(rb2d.position, radius);
 
         foreach (var collider in collisions) {
@@ -19,11 +19,27 @@ public static class ExtensionScript
                     // Calculate explosion force depending on distance; closer is stronger while far is weaker force
                     float explosionForce = force / dist;
 
-                    rb.AddForce(dir.normalized * explosionForce);
+                    Vector2 explosionDirection = Vector2.one;
+
+                    switch (direction) {
+                        case ExplosionDirection.Center:
+                            explosionDirection = Vector2.one;
+                            break;
+                        case ExplosionDirection.Up:
+                            explosionDirection = Vector2.up * 50;
+                            break;
+                    }
+
+                    rb.AddForce(dir.normalized * explosionForce * explosionDirection);
                 }
             }
         }
 
         return collisions;
     }
+}
+
+public enum ExplosionDirection {
+    Center,
+    Up,
 }

@@ -6,7 +6,10 @@ using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
-    [Tooltip("Maximum amount of health")] [SerializeField] private int maxHealth = 10;
+    [Header("Maximum amount of health")]
+    [SerializeField] private int maxHealthEasyMode = 10;
+    [SerializeField] private int maxHealthNormalMode = 5;
+    [SerializeField] private int maxHealthHardMode = 3;
 
     [Tooltip("Health ratio at which the critical health vignette starts appearing")]
     [SerializeField] private float criticalHealthRatio = 0.3f;
@@ -23,11 +26,30 @@ public class Health : MonoBehaviour
     public bool IsCritical() => GetRatio() <= criticalHealthRatio;
 
     bool m_IsDead;
+    int maxHealth;
 
     public float MaxHealth => maxHealth;
     public float CriticalHealthRatio => criticalHealthRatio;
 
     void Awake() {
+        GameDifficulty difficulty = FindObjectOfType<GameDifficulty>();
+
+        if (difficulty != null) {
+            switch (difficulty.mode) {
+                case GameDifficulty.Mode.Easy:
+                    maxHealth = maxHealthEasyMode;
+                    break;
+                case GameDifficulty.Mode.Normal:
+                    maxHealth = maxHealthNormalMode;
+                    break;
+                case GameDifficulty.Mode.Hard:
+                    maxHealth = maxHealthHardMode;
+                    break;
+            }
+        } else {
+            maxHealth = 10;
+        }
+
         CurrentHealth = maxHealth;
     }
 
