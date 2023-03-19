@@ -11,6 +11,8 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private bool invertX;
     [SerializeField] private bool invertY;
 
+    private GameFlowManager GameFlowManager;
+
     public Vector2 move { get; private set; }
     public Vector2 look { get; private set; }
     public bool run { get; set; }
@@ -18,7 +20,11 @@ public class PlayerInputHandler : MonoBehaviour
     public bool crouch { get; set; }
     public bool hasAnalog { get; private set; }
 
+    public bool CanUseInput => !PauseMenu.GameIsPaused && !GameFlowManager.GameIsEnding;
+
     private void Awake() {
+        GameFlowManager = FindObjectOfType<GameFlowManager>();
+
         InputSystem.onDeviceChange += (device, change) => {
             switch (change) {
                 case InputDeviceChange.Added:
@@ -39,38 +45,54 @@ public class PlayerInputHandler : MonoBehaviour
     }
 
     public void OnMove(InputAction.CallbackContext context) {
-        move = context.ReadValue<Vector2>();
+        if (CanUseInput)
+            move = context.ReadValue<Vector2>();
+        else
+            move = Vector2.zero;
     }
 
     public void OnLook(InputAction.CallbackContext context) {
-        look = context.ReadValue<Vector2>();
+        if (CanUseInput) {
+            look = context.ReadValue<Vector2>();
 
-        Vector2 l = look;
-        l.x *= sensitivityX;
-        l.y *= sensitivityY;
+            Vector2 l = look;
+            l.x *= sensitivityX;
+            l.y *= sensitivityY;
 
-        if (invertX) l.x *= -1;
-        if (invertY) l.y *= -1;
+            if (invertX) l.x *= -1;
+            if (invertY) l.y *= -1;
 
-        l *= 0.1f;
+            l *= 0.1f;
 
 #if UNITY_WEBGL
             l *= webglLookSensitivityMultiplier;
 #endif
 
-        look = l;
+            look = l;
+        } else {
+            look = Vector2.zero;
+        }
     }
 
     public void OnRun(InputAction.CallbackContext context) {
-        run = context.performed;
+        if (CanUseInput)
+            run = context.performed;
+        else
+            run = false;
     }
 
     public void OnJump(InputAction.CallbackContext context) {
-        jump = context.performed;
+        if (CanUseInput)
+            jump = context.performed;
+        else
+            jump = false;
     }
 
     public void OnCrouch(InputAction.CallbackContext context) {
-        crouch = context.performed;
+        if (CanUseInput)
+            crouch = context.performed;
+        else
+            crouch = false;
     }
 }
 

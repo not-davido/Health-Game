@@ -12,6 +12,10 @@ public class PauseMenu : MonoBehaviour
 
     public static bool GameIsPaused { get; private set; }
 
+    private void Awake()
+    {
+        EventManager.AddListener<GameCompletedEvent>(GameEnded);
+    }
     // Start is called before the first frame update
     void Start() {
         SetPauseMenuActivation(false);
@@ -49,5 +53,14 @@ public class PauseMenu : MonoBehaviour
         menuRoot.SetActive(false);
 
         EventManager.Broadcast(Events.GameQuitEvent);
+    }
+
+    void GameEnded(GameCompletedEvent evt) {
+        canPause = false;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<GameCompletedEvent>(GameEnded);
     }
 }

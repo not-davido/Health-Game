@@ -12,6 +12,7 @@ public static class Events
     public static DisplayMessageEvent DisplayMessageEvent = new DisplayMessageEvent();
     public static PlayerFailedEvent PlayerFailedEvent = new();
     public static GameQuitEvent GameQuitEvent = new();
+    public static GameCompletedEvent GameCompletedEvent = new();
 }
 
 public class GameEvent { }
@@ -60,3 +61,5 @@ public class DisplayMessageEvent : GameEvent
 public class PlayerFailedEvent : GameEvent { }
 
 public class GameQuitEvent : GameEvent { }
+
+public class GameCompletedEvent : GameEvent { }

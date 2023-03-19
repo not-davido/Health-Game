@@ -7,14 +7,19 @@ using UnityEngine.SceneManagement;
 public class GameFlowManager : MonoBehaviour
 {
     [SerializeField] private CanvasGroup fadeCanvas;
+    [SerializeField] private TMPro.TextMeshProUGUI gameResultText;
     [SerializeField] private float fadeDelay = 1.5f;
     [SerializeField] private float delayBeforeFading = 3;
+    [SerializeField] private float extraDelayForWin = 2f;
     [SerializeField] private float quitFadeDelay = 1f;
     [SerializeField] private float delayBeforeQuiting = 0.5f;
 
+    private GameDifficulty GameDifficulty;
+    private Attempts Attempts;
     private bool gameIsStarting;
     private bool gameIsEnding;
     private bool gameIsQuiting;
+    private bool won;
     private float fadeTimer;
 
     public bool GameIsEnding => gameIsEnding;
@@ -23,13 +28,18 @@ public class GameFlowManager : MonoBehaviour
     {
         EventManager.AddListener<PlayerFailedEvent>(PlayerFailed);
         EventManager.AddListener<GameQuitEvent>(OnQuit);
+        EventManager.AddListener<GameCompletedEvent>(GameCompleted);
     }
 
     private void Start()
     {
+        GameDifficulty = FindObjectOfType<GameDifficulty>();
+        Attempts = FindObjectOfType<Attempts>();
+
         gameIsStarting = true;
         fadeTimer = Time.time;
         fadeCanvas.gameObject.SetActive(true);
+        gameResultText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -48,13 +58,24 @@ public class GameFlowManager : MonoBehaviour
             float timeRatio = (Time.time - fadeTimer) / fadeDelay;
             fadeCanvas.alpha = timeRatio;
 
-            if (!PauseMenu.GameIsPaused && (Keyboard.current.spaceKey.wasPressedThisFrame ||
-                Mouse.current.leftButton.wasPressedThisFrame)) {
-                SceneManager.LoadScene(1);
-            }
+            if (won) {
+                if (timeRatio >= 1 + 0.5f) {
+                    gameResultText.gameObject.SetActive(true);
+                    gameResultText.text = $"Difficulty : <color={GameDifficulty.textColor}>{GameDifficulty.mode}</color>\n Attempts : {Attempts.attempt}";
 
-            if (timeRatio >= 1)
-                SceneManager.LoadScene(1);
+                    if (Keyboard.current.spaceKey.wasPressedThisFrame || Mouse.current.leftButton.wasPressedThisFrame) {
+                        SceneManager.LoadScene(0);
+                    }
+                }
+            } else {
+                if (!PauseMenu.GameIsPaused && (Keyboard.current.spaceKey.wasPressedThisFrame ||
+                        Mouse.current.leftButton.wasPressedThisFrame)) {
+                    SceneManager.LoadScene(1);
+                }
+
+                if (timeRatio >= 1)
+                    SceneManager.LoadScene(1);
+            }
         }
 
         if (gameIsQuiting) {
@@ -71,8 +92,11 @@ public class GameFlowManager : MonoBehaviour
     void EndGame(bool win) {
         gameIsEnding = true;
         fadeCanvas.gameObject.SetActive(true);
+        won = win;
 
-        if (!win) {
+        if (win) {
+            fadeTimer = Time.time + delayBeforeFading + extraDelayForWin;
+        } else {
             fadeTimer = Time.time + delayBeforeFading;
         }
     }
@@ -87,8 +111,11 @@ public class GameFlowManager : MonoBehaviour
     {
         EventManager.RemoveListener<PlayerFailedEvent>(PlayerFailed);
         EventManager.RemoveListener<GameQuitEvent>(OnQuit);
+        EventManager.RemoveListener<GameCompletedEvent>(GameCompleted);
+
     }
 
     void PlayerFailed(PlayerFailedEvent evt) => EndGame(false);
     void OnQuit(GameQuitEvent evt) => QuitGame();
+    void GameCompleted(GameCompletedEvent evt) => EndGame(true);
 }

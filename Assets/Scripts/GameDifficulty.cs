@@ -10,6 +10,21 @@ public class GameDifficulty : MonoBehaviour
 
     public Mode mode;
 
+    public string textColor {
+        get {
+            switch (mode) {
+                case Mode.Easy:
+                    return "green";
+                case Mode.Normal:
+                    return "yellow";
+                case Mode.Hard:
+                    return "red";
+                default:
+                    return "white";
+            }
+        }
+    }
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);

@@ -23,6 +23,7 @@ public class Cannon : MonoBehaviour
     private void Awake()
     {
         StartGame.OnGameStarted += CanFire;
+        EventManager.AddListener<GameCompletedEvent>(GameEnded);
     }
 
     // Start is called before the first frame update
@@ -80,8 +81,11 @@ public class Cannon : MonoBehaviour
         canFire = value;
     }
 
+    void GameEnded(GameCompletedEvent evt) => CanFire(false);
+
     private void OnDisable()
     {
         StartGame.OnGameStarted -= CanFire;
+        EventManager.RemoveListener<GameCompletedEvent>(GameEnded);
     }
 }

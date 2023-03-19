@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraScroll : MonoBehaviour
 {
     [SerializeField] private float speed = 3;
+    [SerializeField] private Transform pointToStop;
 
     private bool scrolling;
 
@@ -20,6 +21,10 @@ public class CameraScroll : MonoBehaviour
     {
         if (scrolling) {
             transform.Translate(speed * Time.deltaTime * Vector3.up);
+        }
+
+        if (transform.position.y >= pointToStop.position.y) {
+            scrolling = false;
         }
     }
 
