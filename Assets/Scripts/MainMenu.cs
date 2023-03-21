@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] private CanvasGroup fadeCanvas;
+    [SerializeField] private GameObject customPanel;
     [SerializeField] private float startingUpFadeDelay = 0.5f;
     [SerializeField] private float fadeDelay = 1.5f;
     [SerializeField] private float delayBeforeStarting = 2f;
@@ -26,7 +27,22 @@ public class MainMenu : MonoBehaviour
     }
 
     public void HardMode() {
-        FindObjectOfType<GameDifficulty>().mode = GameDifficulty.Mode.Impossible;
+        FindObjectOfType<GameDifficulty>().mode = GameDifficulty.Mode.Hard;
+        StartGame();
+    }
+
+    public void CustomMode() {
+        FindObjectOfType<GameDifficulty>().mode = GameDifficulty.Mode.Custom;
+
+        GameObject g = new("Custom Mode");
+        CustomMode custom = g.AddComponent<CustomMode>();
+
+        custom.HealthPoints = (int)FindObjectOfType<CustomModeHealthPointSlider>().VALUE;
+        custom.LightRadius = FindObjectOfType<CustomModeLightRadiusSlider>().VALUE;
+        custom.ScrollSpeed = FindObjectOfType<CustomModeScrollSpeedSlider>().VALUE;
+
+        DontDestroyOnLoad(g);
+
         StartGame();
     }
 
@@ -34,6 +50,7 @@ public class MainMenu : MonoBehaviour
     {
         fadeCanvas.alpha = 1;
         fadeCanvas.gameObject.SetActive(true);
+        customPanel.SetActive(false);
         fadeTimer = Time.time;
         menuStarting = true;
     }

@@ -17,6 +17,7 @@ public class GameFlowManager : MonoBehaviour
 
     private GameDifficulty GameDifficulty;
     private Attempts Attempts;
+    private CustomMode customMode;
     private bool gameIsStarting;
     private bool gameIsEnding;
     private bool gameIsQuiting;
@@ -37,6 +38,7 @@ public class GameFlowManager : MonoBehaviour
     {
         GameDifficulty = FindObjectOfType<GameDifficulty>();
         Attempts = FindObjectOfType<Attempts>();
+        customMode = FindObjectOfType<CustomMode>();
 
         gameIsStarting = true;
         fadeTimer = Time.time;
@@ -63,7 +65,11 @@ public class GameFlowManager : MonoBehaviour
             if (won) {
                 if (timeRatio >= 1 + 0.5f) {
                     gameResultText.gameObject.SetActive(true);
-                    gameResultText.text = $"Difficulty : <color={GameDifficulty.textColor}>{GameDifficulty.mode}</color>\n Attempts : {Attempts.attempt}";
+                    gameResultText.text = $"You reached the top!\n\nDifficulty : <color={GameDifficulty.textColor}>{GameDifficulty.mode}</color>\nAttempts : {Attempts.attempt}";
+
+                    if (customMode != null) {
+                        gameResultText.text += $"\n\nHealth points : {customMode.HealthPoints}\nLight Radius : {customMode.LightRadius}\nScroll Speed : {customMode.ScrollSpeed}";
+                    }
 
                     if (!gameResultAudioPlayed) {
                         GetComponentInChildren<AudioSource>().PlayOneShot(gameResultAudio);
@@ -71,6 +77,9 @@ public class GameFlowManager : MonoBehaviour
                     }
 
                     if (Keyboard.current.spaceKey.wasPressedThisFrame || Mouse.current.leftButton.wasPressedThisFrame) {
+                        if (customMode != null)
+                            Destroy(customMode.gameObject);
+
                         SceneManager.LoadScene(0);
                     }
                 }

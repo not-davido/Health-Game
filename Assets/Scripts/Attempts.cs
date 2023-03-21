@@ -20,6 +20,7 @@ public class Attempts : MonoBehaviour
 
         EventManager.AddListener<PlayerFailedEvent>(OnPLayerFailed);
         EventManager.AddListener<GameQuitEvent>(OnQuit);
+        EventManager.AddListener<GameCompletedEvent>(GameEnded);
     }
 
     void OnPLayerFailed(PlayerFailedEvent evt) {
@@ -30,9 +31,14 @@ public class Attempts : MonoBehaviour
         Destroy(gameObject);
     }
 
+    void GameEnded(GameCompletedEvent evt) {
+        Destroy(gameObject);
+    }
+
     private void OnDestroy()
     {
         EventManager.RemoveListener<PlayerFailedEvent>(OnPLayerFailed);
         EventManager.RemoveListener<GameQuitEvent>(OnQuit);
+        EventManager.RemoveListener<GameCompletedEvent>(GameEnded);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameDifficulty : MonoBehaviour
 {
     public enum Mode {
-        Easy, Normal, Impossible
+        Easy, Normal, Hard, Custom
     }
 
     public Mode mode;
@@ -17,8 +17,9 @@ public class GameDifficulty : MonoBehaviour
                     return "green";
                 case Mode.Normal:
                     return "yellow";
-                case Mode.Impossible:
+                case Mode.Hard:
                     return "red";
+                case Mode.Custom:
                 default:
                     return "white";
             }
@@ -28,5 +29,22 @@ public class GameDifficulty : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+
+        EventManager.AddListener<GameQuitEvent>(OnQuit);
+        EventManager.AddListener<GameCompletedEvent>(GameEnded);
+    }
+
+    void OnQuit(GameQuitEvent evt) {
+        Destroy(gameObject);
+    }
+
+    void GameEnded(GameCompletedEvent evt) {
+        Destroy(gameObject);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<GameQuitEvent>(OnQuit);
+        EventManager.RemoveListener<GameCompletedEvent>(GameEnded);
     }
 }

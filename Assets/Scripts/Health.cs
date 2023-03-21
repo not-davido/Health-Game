@@ -42,8 +42,11 @@ public class Health : MonoBehaviour
                 case GameDifficulty.Mode.Normal:
                     maxHealth = maxHealthNormalMode;
                     break;
-                case GameDifficulty.Mode.Impossible:
+                case GameDifficulty.Mode.Hard:
                     maxHealth = maxHealthHardMode;
+                    break;
+                case GameDifficulty.Mode.Custom:
+                    maxHealth = FindObjectOfType<CustomMode>().HealthPoints;
                     break;
             }
         } else {

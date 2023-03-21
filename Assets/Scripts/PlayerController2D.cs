@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(PlayerInputHandler))]
 public class PlayerController2D : MonoBehaviour
@@ -18,6 +19,7 @@ public class PlayerController2D : MonoBehaviour
 
     [Header("Jump")]
     [SerializeField] private float jumpHeight = 7f;
+    [SerializeField] private float jumpVariableHeightButtonTimer = 0.5f;
     [SerializeField] private float jumpCooldown = 0.2f;
 
     [Header("Ground")]
@@ -44,6 +46,8 @@ public class PlayerController2D : MonoBehaviour
     private float speedChangeRateVelocity;
     private bool tookDamage;
     private bool diedFromFall;
+    private bool isHoldingJump;
+    private float jumpTimer;
 
     public bool isRunning { get; private set; }
     public bool isInvincible { get; private set; }
@@ -84,13 +88,27 @@ public class PlayerController2D : MonoBehaviour
         //rb2D.position = position;
 
         if (jump) {
-            rb2D.AddForce(new Vector2(0f, jumpHeight), ForceMode2D.Impulse);
-            jump = false;
+            isHoldingJump = Keyboard.current.spaceKey.isPressed;
+
+            if (isHoldingJump) {
+                if (Time.time <= jumpTimer) {
+                    var jumpVelocity = rb2D.velocity;
+                    jumpVelocity.y = jumpHeight;
+                    rb2D.velocity = jumpVelocity;
+                } else {
+                    isHoldingJump = false;
+                    jump = false;
+                }
+            } else {
+                jump = false;
+            }
+            //rb2D.AddForce(new Vector2(0f, jumpHeight), ForceMode2D.Impulse);
+            //jump = false;
         }
 
         if (tookDamage) {
             rb2D.AddForce(new(0, 3f), ForceMode2D.Impulse);
-            tookDamage = false;
+            //tookDamage = false;
         }
     }
 
@@ -126,6 +144,7 @@ public class PlayerController2D : MonoBehaviour
     void Jump() {
         if (IsGrounded()) {
             if (inputHandler.jump && Time.time > jumpCooldownTimer) {
+                jumpTimer = Time.time + jumpVariableHeightButtonTimer;
                 jump = true;
             }
         } else {

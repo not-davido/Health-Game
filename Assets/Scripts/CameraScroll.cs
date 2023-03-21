@@ -11,6 +11,14 @@ public class CameraScroll : MonoBehaviour
 
     private void Awake()
     {
+        GameDifficulty gameDifficulty = FindObjectOfType<GameDifficulty>();
+
+        if (gameDifficulty != null) {
+            if (gameDifficulty.mode == GameDifficulty.Mode.Custom) {
+                speed = FindObjectOfType<CustomMode>().ScrollSpeed;
+            }
+        }
+
         StartGame.OnGameStarted += Scroll;
 
         EventManager.AddListener<PlayerFailedEvent>(OnPlayerFailed);

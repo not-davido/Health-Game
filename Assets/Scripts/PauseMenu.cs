@@ -46,10 +46,6 @@ public class PauseMenu : MonoBehaviour
     public void Quit() {
         canPause = false;
 
-        GameDifficulty gameDifficulty = FindObjectOfType<GameDifficulty>();
-        if (gameDifficulty != null) 
-            Destroy(gameDifficulty.gameObject);
-
         menuRoot.SetActive(false);
 
         EventManager.Broadcast(Events.GameQuitEvent);

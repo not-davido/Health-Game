@@ -10778,10 +10778,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7406960686977179801, guid: 2ed330bd3a83848b7b8bf237a3f44a5e, type: 3}
+      propertyPath: m_GravityScale
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7406960686977179802, guid: 2ed330bd3a83848b7b8bf237a3f44a5e, type: 3}
+      propertyPath: jumpHeight
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 7406960686977179802, guid: 2ed330bd3a83848b7b8bf237a3f44a5e, type: 3}
       propertyPath: cameraTransform
       value: 
       objectReference: {fileID: 519420032}
+    - target: {fileID: 7406960686977179802, guid: 2ed330bd3a83848b7b8bf237a3f44a5e, type: 3}
+      propertyPath: jumpVariableHeightButtonTimer
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 7406960686977179807, guid: 2ed330bd3a83848b7b8bf237a3f44a5e, type: 3}
       propertyPath: m_RootOrder
       value: 1
