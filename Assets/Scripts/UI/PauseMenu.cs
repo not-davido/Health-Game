@@ -10,8 +10,6 @@ public class PauseMenu : MonoBehaviour
 
     private bool canPause;
 
-    public static bool GameIsPaused { get; private set; }
-
     private void Awake()
     {
         EventManager.AddListener<GameCompletedEvent>(GameEnded);
@@ -36,7 +34,10 @@ public class PauseMenu : MonoBehaviour
         menuRoot.SetActive(active);
 
         Time.timeScale = menuRoot.activeSelf ? 0 : 1;
-        GameIsPaused = active;
+
+        GamePauseEvent evt = Events.GamePauseEvent;
+        evt.paused = menuRoot.activeSelf;
+        EventManager.Broadcast(evt);
     }
 
     public void ClosePauseMenu() {

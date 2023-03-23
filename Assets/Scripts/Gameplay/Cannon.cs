@@ -22,6 +22,16 @@ public class Cannon : MonoBehaviour
 
     private void Awake()
     {
+        GameDifficulty difficulty = FindObjectOfType<GameDifficulty>();
+
+        if (difficulty != null) {
+            if (difficulty.mode == GameDifficulty.Mode.Custom) {
+                var custom = FindObjectOfType<CustomMode>();
+                float n = Random.Range(custom.interval.x, custom.interval.y);
+                projectileInterval = n;
+            }
+        }
+
         StartGame.OnGameStarted += CanFire;
         EventManager.AddListener<GameCompletedEvent>(GameEnded);
     }

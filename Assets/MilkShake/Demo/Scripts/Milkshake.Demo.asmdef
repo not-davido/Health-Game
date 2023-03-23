@@ -1,0 +1,16 @@
+{
+    "name": "Milkshake.Demo",
+    "rootNamespace": "",
+    "references": [
+        "GUID:f46e06de686b34dc8af7f07b5d7fb6b3"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

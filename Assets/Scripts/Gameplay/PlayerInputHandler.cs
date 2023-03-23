@@ -12,6 +12,7 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private bool invertY;
 
     private GameFlowManager GameFlowManager;
+    private PauseDetector PauseDetector;
 
     public Vector2 move { get; private set; }
     public Vector2 look { get; private set; }
@@ -20,10 +21,11 @@ public class PlayerInputHandler : MonoBehaviour
     public bool crouch { get; set; }
     public bool hasAnalog { get; private set; }
 
-    public bool CanUseInput => !PauseMenu.GameIsPaused && !GameFlowManager.GameIsEnding;
+    public bool CanUseInput => !PauseDetector.IsGamePaused && !GameFlowManager.GameIsEnding;
 
     private void Awake() {
         GameFlowManager = FindObjectOfType<GameFlowManager>();
+        PauseDetector = FindObjectOfType<PauseDetector>();
 
         InputSystem.onDeviceChange += (device, change) => {
             switch (change) {

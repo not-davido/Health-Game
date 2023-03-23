@@ -18,6 +18,7 @@ public class GameFlowManager : MonoBehaviour
     private GameDifficulty GameDifficulty;
     private Attempts Attempts;
     private CustomMode customMode;
+    private PauseDetector pauseDetector;
     private bool gameIsStarting;
     private bool gameIsEnding;
     private bool gameIsQuiting;
@@ -39,6 +40,7 @@ public class GameFlowManager : MonoBehaviour
         GameDifficulty = FindObjectOfType<GameDifficulty>();
         Attempts = FindObjectOfType<Attempts>();
         customMode = FindObjectOfType<CustomMode>();
+        pauseDetector = FindObjectOfType<PauseDetector>();
 
         gameIsStarting = true;
         fadeTimer = Time.time;
@@ -84,7 +86,7 @@ public class GameFlowManager : MonoBehaviour
                     }
                 }
             } else {
-                if (!PauseMenu.GameIsPaused && (Keyboard.current.spaceKey.wasPressedThisFrame ||
+                if (!pauseDetector.IsGamePaused && (Keyboard.current.spaceKey.wasPressedThisFrame ||
                         Mouse.current.leftButton.wasPressedThisFrame)) {
                     SceneManager.LoadScene(1);
                 }

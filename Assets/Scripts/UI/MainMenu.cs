@@ -41,6 +41,9 @@ public class MainMenu : MonoBehaviour
         custom.LightRadius = FindObjectOfType<CustomModeLightRadiusSlider>().VALUE;
         custom.ScrollSpeed = FindObjectOfType<CustomModeScrollSpeedSlider>().VALUE;
 
+        var interval = FindObjectOfType<CustomModeCannonIntervalInputField>();
+        custom.interval = new(interval.FROM_VALUE, interval.TO_VALUE);
+
         DontDestroyOnLoad(g);
 
         StartGame();

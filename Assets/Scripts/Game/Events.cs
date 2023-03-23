@@ -2,7 +2,6 @@ using UnityEngine;
 
 public static class Events
 {
-    public static ObjectiveUpdateEvent ObjectiveUpdateEvent = new ObjectiveUpdateEvent();
     public static AllObjectivesCompletedEvent AllObjectivesCompletedEvent = new AllObjectivesCompletedEvent();
     public static GameOverEvent GameOverEvent = new GameOverEvent();
     public static PlayerDeathEvent PlayerDeathEvent = new PlayerDeathEvent();
@@ -13,18 +12,10 @@ public static class Events
     public static PlayerFailedEvent PlayerFailedEvent = new();
     public static GameQuitEvent GameQuitEvent = new();
     public static GameCompletedEvent GameCompletedEvent = new();
+    public static GamePauseEvent GamePauseEvent = new();
 }
 
 public class GameEvent { }
-
-public class ObjectiveUpdateEvent : GameEvent
-{
-    public Objective Objective;
-    public string DescriptionText;
-    public string CounterText;
-    public bool IsComplete;
-    public string NotificationText;
-}
 
 public class AllObjectivesCompletedEvent : GameEvent { }
 
@@ -63,3 +54,7 @@ public class PlayerFailedEvent : GameEvent { }
 public class GameQuitEvent : GameEvent { }
 
 public class GameCompletedEvent : GameEvent { }
+
+public class GamePauseEvent : GameEvent {
+    public bool paused;
+}
