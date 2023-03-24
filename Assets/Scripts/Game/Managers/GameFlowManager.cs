@@ -37,10 +37,10 @@ public class GameFlowManager : MonoBehaviour
 
     private void Start()
     {
-        GameDifficulty = FindObjectOfType<GameDifficulty>();
-        Attempts = FindObjectOfType<Attempts>();
-        customMode = FindObjectOfType<CustomMode>();
-        pauseDetector = FindObjectOfType<PauseDetector>();
+        GameDifficulty = FindFirstObjectByType<GameDifficulty>();
+        Attempts = FindFirstObjectByType<Attempts>();
+        customMode = FindFirstObjectByType<CustomMode>();
+        pauseDetector = GetComponent<PauseDetector>();
 
         gameIsStarting = true;
         fadeTimer = Time.time;

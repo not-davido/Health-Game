@@ -38,6 +38,5 @@ public class Spin : MonoBehaviour
     private void OnDisable()
     {
         EventManager.RemoveListener<GameCompletedEvent>(GameEnded);
-
     }
 }

@@ -17,31 +17,31 @@ public class MainMenu : MonoBehaviour
     private bool gameIsStarting;
 
     public void EasyMode() {
-        FindObjectOfType<GameDifficulty>().mode = GameDifficulty.Mode.Easy;
+        FindFirstObjectByType<GameDifficulty>().mode = GameDifficulty.Mode.Easy;
         StartGame();
     }
 
     public void NormalMode() {
-        FindObjectOfType<GameDifficulty>().mode = GameDifficulty.Mode.Normal;
+        FindFirstObjectByType<GameDifficulty>().mode = GameDifficulty.Mode.Normal;
         StartGame();
     }
 
     public void HardMode() {
-        FindObjectOfType<GameDifficulty>().mode = GameDifficulty.Mode.Hard;
+        FindFirstObjectByType<GameDifficulty>().mode = GameDifficulty.Mode.Hard;
         StartGame();
     }
 
     public void CustomMode() {
-        FindObjectOfType<GameDifficulty>().mode = GameDifficulty.Mode.Custom;
+        FindFirstObjectByType<GameDifficulty>().mode = GameDifficulty.Mode.Custom;
 
         GameObject g = new("Custom Mode");
         CustomMode custom = g.AddComponent<CustomMode>();
 
-        custom.HealthPoints = (int)FindObjectOfType<CustomModeHealthPointSlider>().VALUE;
-        custom.LightRadius = FindObjectOfType<CustomModeLightRadiusSlider>().VALUE;
-        custom.ScrollSpeed = FindObjectOfType<CustomModeScrollSpeedSlider>().VALUE;
+        custom.HealthPoints = (int)FindFirstObjectByType<CustomModeHealthPointSlider>().VALUE;
+        custom.LightRadius = FindFirstObjectByType<CustomModeLightRadiusSlider>().VALUE;
+        custom.ScrollSpeed = FindFirstObjectByType<CustomModeScrollSpeedSlider>().VALUE;
 
-        var interval = FindObjectOfType<CustomModeCannonIntervalInputField>();
+        var interval = FindFirstObjectByType<CustomModeCannonIntervalInputField>();
         custom.interval = new(interval.FROM_VALUE, interval.TO_VALUE);
 
         DontDestroyOnLoad(g);

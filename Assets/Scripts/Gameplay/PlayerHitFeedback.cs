@@ -31,12 +31,12 @@ public class PlayerHitFeedback : MonoBehaviour
     void Start()
     {
         // Subscribe to player damage events
-        PlayerController2D playerCharacterController = FindObjectOfType<PlayerController2D>();
+        PlayerController2D playerCharacterController = FindFirstObjectByType<PlayerController2D>();
         SpriteRenderer = GetComponent<SpriteRenderer>();
 
         m_PlayerHealth = playerCharacterController.GetComponent<Health>();
 
-        m_GameFlowManager = FindObjectOfType<GameFlowManager>();
+        m_GameFlowManager = FindFirstObjectByType<GameFlowManager>();
 
         m_PlayerHealth.OnDamaged += OnTakeDamage;
         m_PlayerHealth.OnHealed += OnHealed;
@@ -67,7 +67,7 @@ public class PlayerHitFeedback : MonoBehaviour
     void OnTakeDamage(float dmg) {
         ResetFlash();
         SpriteRenderer.material.SetColor("_Color", DamageFlashColor * 10f);
-        FindObjectOfType<MilkShake.Demo.ShakeButton>().UIShakeOnce();
+        FindFirstObjectByType<MilkShake.Demo.ShakeButton>().UIShakeOnce();
     }
 
     void OnHealed(float amount) {
